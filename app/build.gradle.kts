@@ -6,20 +6,20 @@ plugins {
 android {
     signingConfigs {
         getByName("debug") {
-            storeFile = file("D:\\Dev\\PJ\\launcher\\app\\my-release-key.keystore")
+            storeFile = file("./my-release-key.keystore")
             storePassword = "123456"
             keyPassword = "123456"
             keyAlias = "alias_name"
         }
         create("release") {
-            storeFile = file("D:\\Dev\\PJ\\launcher\\app\\my-release-key.keystore")
+            storeFile = file("./my-release-key.keystore")
             storePassword = "123456"
             keyAlias = "alias_name"
             keyPassword = "123456"
         }
     }
     namespace = "com.example.fluttermodulelauncher"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.fluttermodulelauncher"
@@ -75,18 +75,18 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.gson)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+//    testImplementation(libs.junit)
+//    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+//    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
-//    implementation(project(":flutter"))
+    implementation(project(":flutter"))
 
-        debugImplementation(libs.flutter.debug)
+//    debugImplementation(libs.flutter.debug)
 //    releaseImplementation(libs.flutter.release)
 //    add("profileImplementation", "com.fpt.isc.pms.sdk_pms:flutter_profile:1.0")
 

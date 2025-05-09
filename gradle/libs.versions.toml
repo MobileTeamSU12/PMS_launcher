@@ -1,7 +1,7 @@
 [versions]
-agp = "8.9.1"
+agp = "8.8.0"
 kotlin = "1.9.0"
-coreKtx = "1.10.1"
+coreKtx = "1.15.0"
 junit = "4.14-SNAPSHOT"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -27,9 +27,9 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
-flutter_debug = { module = "com.fpt.isc.pms.sdk_pms:flutter_debug", version.ref = "flutter_module_vers" }
+#flutter_debug = { module = "com.fpt.isc.pms.sdk_pms:flutter_debug", version.ref = "flutter_module_vers" }
 #flutter_debug = { module = "com.example.wrapper_module:flutter_debug", version.ref = "flutter_module_vers" }
-flutter_release = { module = "com.fpt.isc.pms.sdk_pms:flutter_release", version.ref = "flutter_module_vers" }
+#flutter_release = { module = "com.fpt.isc.pms.sdk_pms:flutter_release", version.ref = "flutter_module_vers" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
