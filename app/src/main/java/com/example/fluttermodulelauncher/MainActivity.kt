@@ -11,10 +11,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,13 +30,19 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.plugin.common.MethodChannel
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
+            var text by remember { mutableStateOf("") }
+
             FlutterModuleLauncherTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -50,18 +54,22 @@ class MainActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Button(onClick = { startFlutterModule() }) {
+                        TextField(
+                           value=  text,
+                            onValueChange = { text = it },
+                        )
+                        Button(onClick = { startFlutterModule(token = text) }) {
                             Text(text = "Start")
                         }
-                        Button(onClick = { startFlutterModule("/create-ticket") }) {
+                        Button(onClick = { startFlutterModule("/create-ticket", text) }) {
                             Text(text = "Create Ticket")
                         }
-                        Button(onClick = { startFlutterModule("/manage-ticket") }) {
+                        Button(onClick = { startFlutterModule("/manage-ticket", text) }) {
                             Text(text = "Manage Ticket")
                         }
                         Button(onClick = {
                             if (flutterEngine == null) {
-                                initEngine();
+                                initEngine(text);
                             }
                             methodChannel.invokeMethod(App.getPmsVersion, null, object : MethodChannel.Result {
                                 override fun success(result: Any?) {
@@ -90,32 +98,37 @@ class MainActivity : ComponentActivity() {
 
     private var flutterEngine: FlutterEngine? = null
 
-    private fun initEngine() {
-        flutterEngine = FlutterEngine(this)
+    private fun initEngine(token: String) {
+        if (flutterEngine == null) {
+            flutterEngine = FlutterEngine(this)
 
-        // trỏ vào hàm main có @pragma('vm:entry-point') trên code Flutter
-        flutterEngine!!.dartExecutor.executeDartEntrypoint(
-            DartExecutor.DartEntrypoint(
-                FlutterInjector.instance().flutterLoader().findAppBundlePath(),
-                "nativeEntry"
+            // trỏ vào hàm main có @pragma('vm:entry-point') trên code Flutter
+            flutterEngine!!.dartExecutor.executeDartEntrypoint(
+                DartExecutor.DartEntrypoint(
+                    FlutterInjector.instance().flutterLoader().findAppBundlePath(),
+                    "nativeEntry"
+                )
             )
-        )
+        }
 
         // Handle các function giao tiếp giữa Flutte với native
-        handleMethodChannel(flutterEngine!!)
+        handleMethodChannel(flutterEngine!!, token)
 
         // Cache the FlutterEngine
         FlutterEngineCache.getInstance().put(engineId, flutterEngine)
     }
 
-    private fun startFlutterModule(route: String = "/login-test") {
+    private fun startFlutterModule(route: String = "/login-test", token: String) {
         Toast.makeText(this, "Starting Flutter...", Toast.LENGTH_SHORT).show()
 
 
         // Khởi tạo Flutter engine nếu chưa có
 //        if (flutterEngine == null) {
-            initEngine();
+            initEngine(token);
 //        }
+
+        // navigate tới route đã chọn
+        navigator(route)
 
         // Khỏi chạy Activity với Flutter engine đã cache
         startActivity(
@@ -124,24 +137,23 @@ class MainActivity : ComponentActivity() {
                 .build(this)
         )
 
-        // navigate tới route đã chọn
-        navigator(route)
     }
 
     private fun navigator(route: String) {
         val jsonMap = mapOf("route" to route)
         val jsonString = Gson().toJson(jsonMap)
 
-
-
         methodChannel.invokeMethod(App.methodNameNavigator, jsonString)
     }
 
-    private fun handleMethodChannel(flutterEngine: FlutterEngine) {
+    private fun handleMethodChannel(flutterEngine: FlutterEngine, token: String) {
         val psId = "9894824"
-//        val token =
-//            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI1MGE0MzY4LTQ4MGUtMTFlZi04Yzk2LTAwNTA1NmEzOWI5OCIsImVtYWlsIjoiZGFpZHBAZnB0LmNvbSIsImZsYWciOiJ3ZWIiLCJpYXQiOjE3NDI4ODY2ODUsImV4cCI6MTc0MzQ5MTQ4NX0.-Cs7VHCuu2OMx2R68fr_NuteE8oLK_gR1bn04qYCIbE"
-        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYWE2NDk1LTFiNmQtNGViNy1hNTc2LTIyOTU0NzZkOWRjYSIsImVtYWlsIjoibmd1eWVubnQ1MEBmcHQuY29tIiwiZmxhZyI6IndlYiIsImlhdCI6MTc0NTU0ODY0OCwiZXhwIjoxNzQ2MTUzNDQ4fQ.bDAur3kHdg_TXcOxuS_pDxsrlRj0g5k9DTs1lsmz5pU"
+
+        // prod
+//        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3MThlOTMxLTFjYzUtNGNkOS1hYmRkLWNkYWI4OGEyNGM2MSIsImVtYWlsIjoibmd1eWVubnQ1MEBmcHQuY29tIiwiZmxhZyI6IndlYiIsImlhdCI6MTc0NjUyMzI5NiwiZXhwIjoxNzQ3MTI4MDk2fQ.gwrT9DxQlJ9aCxuhKbfVpKnYJjhSonGesSGCCNvgPS0"
+        // stag
+//        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEzMjYwMDI1LWEyOWQtNDk2My04ODdhLTA4ZTA0N2NiMTFmZCIsImVtYWlsIjoiaGllbnR0NDZAZnB0LmNvbSIsImZsYWciOiJ3ZWIiLCJpYXQiOjE3NDY2MDI4MjMsImV4cCI6MTc0NzIwNzYyM30.aWJWEU4b-6I8C9kFx41lxLrUpv9BiH62wLt3MGAUaX4"
+
         val fcmToken = "67ea5f2b-7768-800f-aab1-f088b34716da"
 
         methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelId)
@@ -153,7 +165,8 @@ class MainActivity : ComponentActivity() {
                 jsonMap["Token"] = token
                 jsonMap["RefSourceCode"] = "SOP"
                 jsonMap["PsId"] = psId
-                jsonMap["Environment"] = "staging" // staging or production
+                jsonMap["Environment"] = "staging" // staging
+//                jsonMap["Environment"] = "production" // production
                 jsonMap["Mode"] = "SPF"
 //                    jsonMap["Parameters"] = parameters
                 val gson = Gson()
