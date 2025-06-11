@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
                             }
                             methodChannel.invokeMethod(App.getPmsVersion, null, object : MethodChannel.Result {
                                 override fun success(result: Any?) {
-                                    Toast.makeText(applicationContext, result.toString(), Toast.LENGTH_SHORT).show()
+//                                    Toast.makeText(applicationContext, result.toString(), Toast.LENGTH_SHORT).show()
                                 }
 
                                 override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startFlutterModule(route: String = "/login-test", token: String) {
-        Toast.makeText(this, "Starting Flutter...", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Starting Flutter...", Toast.LENGTH_SHORT).show()
 
 
         // Khởi tạo Flutter engine nếu chưa có
@@ -152,7 +152,7 @@ class MainActivity : ComponentActivity() {
         // prod
 //        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3MThlOTMxLTFjYzUtNGNkOS1hYmRkLWNkYWI4OGEyNGM2MSIsImVtYWlsIjoibmd1eWVubnQ1MEBmcHQuY29tIiwiZmxhZyI6IndlYiIsImlhdCI6MTc0NjUyMzI5NiwiZXhwIjoxNzQ3MTI4MDk2fQ.gwrT9DxQlJ9aCxuhKbfVpKnYJjhSonGesSGCCNvgPS0"
         // stag
-//        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEzMjYwMDI1LWEyOWQtNDk2My04ODdhLTA4ZTA0N2NiMTFmZCIsImVtYWlsIjoiaGllbnR0NDZAZnB0LmNvbSIsImZsYWciOiJ3ZWIiLCJpYXQiOjE3NDY2MDI4MjMsImV4cCI6MTc0NzIwNzYyM30.aWJWEU4b-6I8C9kFx41lxLrUpv9BiH62wLt3MGAUaX4"
+        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEzMjYwMDI1LWEyOWQtNDk2My04ODdhLTA4ZTA0N2NiMTFmZCIsImVtYWlsIjoiaGllbnR0NDZAZnB0LmNvbSIsImZsYWciOiJ3ZWIiLCJpYXQiOjE3NDk2MTA4MTcsImV4cCI6MTc1MDIxNTYxN30.2JyxLBtYJHDsano1CXifFLdWsO4o3Sxp5ycWLQAzxSs"
 
         val fcmToken = "67ea5f2b-7768-800f-aab1-f088b34716da"
 
