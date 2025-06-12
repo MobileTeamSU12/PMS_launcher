@@ -16,7 +16,6 @@ import io.flutter.plugin.common.MethodChannel
 class App : Application() {
 
     companion object {
-        lateinit var flutterEngine: FlutterEngine
         lateinit var methodChannel: MethodChannel
         var engineId: String = "launcher_engine_id"
         var channelId: String = "com.fpt.isc.pms.sdk_pms.methodchannel"

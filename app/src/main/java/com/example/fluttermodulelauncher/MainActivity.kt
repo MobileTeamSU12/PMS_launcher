@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.fluttermodulelauncher.App.Companion
 import com.example.fluttermodulelauncher.App.Companion.channelId
 import com.example.fluttermodulelauncher.App.Companion.engineId
-import com.example.fluttermodulelauncher.App.Companion.flutterEngine
 import com.example.fluttermodulelauncher.App.Companion.methodChannel
 import com.example.fluttermodulelauncher.ui.theme.FlutterModuleLauncherTheme
 import com.google.gson.Gson
